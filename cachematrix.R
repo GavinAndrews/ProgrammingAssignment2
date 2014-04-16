@@ -3,6 +3,10 @@
 ##
 ## Create a special 'matrix object' with methods for getting and setting a memoized value
 ## 
+##
+## CITE: Based on a caching mechanism for calculating the mean of a numeric vector by Roger D. Peng 
+##       presented as part of https://class.coursera.org/rprog-002
+
 
 makeCacheMatrix <- function(x = matrix()) {
   inv <- NULL
@@ -26,16 +30,28 @@ makeCacheMatrix <- function(x = matrix()) {
 ##  Note: Only works for matrices that have non-zero determinant since solve
 ##        will fail for those cases since there is no solution.
 ##
+## CITE: Based on a caching mechanism for calculating the mean of a numeric vector by Roger D. Peng 
+##       presented as part of https://class.coursera.org/rprog-002
 
 cacheSolve <- function(x, ...) {
+
+  # Try and obtain a cached value if present 
   inv <- x$getinverse()
   if(!is.null(inv)) {
     message("getting cached data")
     return(inv)
   }
+  
+  # Otherwise obtain arguments and calculate
   data <- x$get()
+  
+  # Use solve function to calculate matrix inverse
   inv <- solve(data)
+  
+  # Save away for future use
   x$setinverse(inv)
+  
+  # Return Value
   inv
 }
 
